@@ -1,0 +1,136 @@
+ülesanne 18
+
+
+tehtud
+
+
+
+
+
+
+
+ülesanne 17
+
+SELECT count(visitor_id)
+FROM bookings
+GROUP BY visitor_id
+;
+
+SELECT count(visitor_id), users.first_name, users.last_name
+FROM bookings
+INNER JOIN users ON bookings.visitor_id = users.id
+GROUP BY visitor_id
+HAVING count(visitor_id) > 2
+;
+
+
+
+SELECT count(visitor_id)
+FROM bookings
+WHERE visitor_id IN (
+	SELECT visitor_id
+	FROM bookings
+	GROUP BY visitor_id
+	HAVING count(visitor_id) > 2
+)
+GROUP BY visitor_id;
+
+
+
+
+
+
+
+
+
+
+
+
+UPDATE bookings
+SET visitor_id = 3
+WHERE id = 34
+;
+
+
+
+
+
+
+
+
+
+
+
+
+ülesanne 16
+
+SELECT bookings.id AS booking_id, users.first_name, users.last_name, rooms.room_type, payments.payment_date, payments.total 
+FROM bookings
+INNER JOIN users ON users.id = bookings.visitor_id
+INNER JOIN rooms ON rooms.id = bookings.room_id
+INNER JOIN payments ON payments.booking_id = bookings.id
+LIMIT 10
+;
+
+ülesanne 15
+
+
+UPDATE users
+SET email = 'muutetud@gmail.com', phone = 123
+WHERE id = 1;
+
+DELETE FROM users
+WHERE id BETWEEN 5 AND 10;
+
+
+
+
+
+
+
+
+
+ülesanne 14
+
+
+SELECT * FROM users ORDER BY last_name ASC LIMIT 3;
+SELECT * FROM users WHERE first_name LIKE 'G%' AND email LIKE '%.com';
+
+SELECT *,
+	CASE
+		WHEN phone like '556%' THEN 'Eesti'
+		WHEN email LIKE '%gov%' THEN 'RIIK'
+		WHEN email LIKE '%edu%' THEN 'KOOL'
+		ELSE 'muu'
+	END AS lisatulp
+ FROM users
+ ORDER BY last_name
+ LIMIT 3
+ ;
+
+
+
+
+
+
+ülesanne 13
+INSERT INTO users (first_name, last_name, email, phone, image ) VALUES
+('imre', 'tard', 'imre.tard@gmail.com', '55663883', 'imretard.jpg' ),
+('karin', 'eegreid', 'karin.eegreid@gmail.com', '55663882452', 'karineegreid.jpg' );
+SELECT * FROM users;
+.read users.sql
+
+
+ülesanne 12
+
+CREATE TABLE kasutaja(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+first_name TEXT NOT NULL,
+last_name TEXT NOT NULL,
+email TEXT NOT NULL,
+telefon TEXT NOT NULL
+);
+ALTER TABLE kasutaja RENAME TO users;
+ALTER TABLE users RENAME COLUMN telefon TO phone;
+.schema users
+ALTER TABLE users ADD COLUMN image TEXT;
